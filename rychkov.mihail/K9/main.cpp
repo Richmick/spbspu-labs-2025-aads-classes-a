@@ -1,7 +1,8 @@
 #include <iostream>
-#include <functional>
-#include <utility>
 #include <string>
+#include <utility>
+#include <functional>
+#include <limits>
 
 namespace rychkov
 {
@@ -301,11 +302,20 @@ int main()
 
   node_type* root = nullptr;
   size_t count = 0;
-  std::cin >> count;
+  if (!(std::cin >> count))
+  {
+    std::cerr << "failed to read input pairs count\n";
+    return 1;
+  }
   for (size_t i = 0; i < count; i++)
   {
     int temp1 = 0, temp2 = 0;
-    std::cin >> temp1 >> temp2;
+    if (!(std::cin >> temp1 >> temp2))
+    {
+      std::cerr << "failed to read pair #" << i + 1 << '\n';
+      destroy(root);
+      return 1;
+    }
     root = rychkov::insert(root, {temp1, temp2});
   }
 
@@ -328,6 +338,7 @@ int main()
     else
     {
       std::cerr << "unknown command\n";
+      destroy(root);
       return 1;
     }
 
@@ -338,6 +349,7 @@ int main()
       if (!std::cin.eof() && !std::cin.bad())
       {
         std::cin.clear();
+        std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
       }
       continue;
     }
