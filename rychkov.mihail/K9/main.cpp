@@ -44,7 +44,7 @@ namespace rychkov
       {
         if (node->middle == nullptr)
         {
-          return {node, false, node};
+          return {node, false, nullptr, node};
         }
         current = node->middle;
       }
@@ -56,13 +56,13 @@ namespace rychkov
           current = node->parent;
           for (; (current != nullptr) && (current->left == prev); prev = current, current = current->parent)
           {}
-          return {current, (current != nullptr) && (current->middle != prev), node};
+          return {current, (current != nullptr) && (current->middle != prev), nullptr, node};
         }
         current = node->left;
       }
       for (; current->right != nullptr; current = current->right)
       {}
-      return {current, true, node};
+      return {current, true, nullptr, node};
     }
     TriTreeIterator next() const noexcept
     {
@@ -79,7 +79,7 @@ namespace rychkov
           current = node->parent;
           for (; (current != nullptr) && (current->right == prev); prev = current, current = current->parent)
           {}
-          return {current, (current != nullptr) && (current->middle == prev)};
+          return {current, (current != nullptr) && (current->middle == prev), node};
         }
         current = node->right;
       }
@@ -87,13 +87,13 @@ namespace rychkov
       {
         if (node->middle == nullptr)
         {
-          return {node, true};
+          return {node, true, node};
         }
         current = node->middle;
       }
       for (; current->left != nullptr; current = current->left)
       {}
-      return {current, false};
+      return {current, false, node};
     }
 
     std::pair< T, T >& data()
